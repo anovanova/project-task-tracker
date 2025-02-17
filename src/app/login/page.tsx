@@ -32,9 +32,14 @@ export default function Login() {
           password: "",
         },
       })
-      function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
-      }
+
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+      const response = await fetch("http://localhost:3000/auth/login", {
+        method: "POST",
+        body: JSON.stringify(values),
+      });
+        console.log(response)
+    }
     return (
       <div className="grid items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
         <div>
