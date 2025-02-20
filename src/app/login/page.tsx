@@ -1,8 +1,10 @@
 "use client"
 
+import { login } from "@/actions/login"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import { useRouter } from 'next/navigation'
 
 import { Button } from "@/components/ui/button"
 import {
@@ -25,6 +27,7 @@ const formSchema = z.object({
   })
 
 export default function Login() {
+  const router = useRouter()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -32,9 +35,15 @@ export default function Login() {
           password: "",
         },
       })
-      function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
+
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+      const response = await login(values)
+      if (response['statusCode'] !== 200){
+        console.log("ERROR")
+      } else {
+        router.push('/')
       }
+    }
     return (
       <div className="grid items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
         <div>
